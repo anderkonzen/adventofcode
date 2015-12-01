@@ -10,4 +10,4 @@ end
 
 dir = Directions.new(instructions)
 puts "Destination Floor: #{dir.destination_floor}" # 138
-puts "Basement Position: #{dir.basement_position}"
+puts "Basement Position: #{dir.basement_position}" # 1771

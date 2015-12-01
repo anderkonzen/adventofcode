@@ -1,24 +1,30 @@
 class Directions
-  attr_accessor :instructions
+  attr_reader :destination_floor
+  attr_reader :basement_position
+  attr_reader :instructions
 
   def initialize(instructions)
     @instructions = instructions
+    process
   end
 
-  # ( - go up
-  # ) - go down
-  def destination_floor
-    @instructions.count('(') - @instructions.count(')')
+  def instructions=(new_instructions)
+    @instructions = new_instructions
+    process
   end
 
-  def basement_position
-    position = 0
-    buffer = 0
-    @instructions.each_char do |chr|
-      position += 1
-      chr == '(' ? buffer += 1 : buffer -= 1
-      break if buffer == -1
+  private
+
+  def process
+    @basement_position = 0
+    @destination_floor = 0
+    @instructions.chars.each_with_index do |chr, index|
+      if chr == '('
+        @destination_floor += 1
+      elsif chr == ')'
+        @destination_floor -= 1
+      end
+      @basement_position = (index + 1) if @destination_floor == -1 && @basement_position == 0
     end
-    position
   end
 end

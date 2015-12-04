@@ -1,9 +1,12 @@
 require 'digest'
 
 class AdventCoins
-  def self.lowest_positive_number(input, zeros)
-    (0..Float::INFINITY).each do |number|
-      return number if Digest::MD5.hexdigest(input + number.to_s).start_with?('0' * zeros)
+  SAFETY_THRESHOLD = 10_000_000
+
+  def self.lowest_positive_number(input, pattern, threshold = SAFETY_THRESHOLD)
+    (1..threshold).each do |number|
+      return number unless Digest::MD5.hexdigest("#{input}#{number}").match(pattern).nil?
     end
+    0
   end
 end
